@@ -1,0 +1,55 @@
+{
+    "bpm": 120.0,
+    "notes": [
+        {
+            "time": -6.0,
+            "lane": 4,
+            "direction": "Down",
+            "position": {
+                "x": 0.0,
+                "y": -6.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 2,
+            "direction": "Left",
+            "position": {
+                "x": -6.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 2,
+            "direction": "Left",
+            "position": {
+                "x": -11.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 1,
+            "direction": "Right",
+            "position": {
+                "x": 16.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 1,
+            "direction": "Right",
+            "position": {
+                "x": 21.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        }
+    ]
+}

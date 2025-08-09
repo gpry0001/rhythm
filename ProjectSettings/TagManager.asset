@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Line
   - Button
+  - Gamebutton
+  - Lodebutton
   layers:
   - Default
   - TransparentFX

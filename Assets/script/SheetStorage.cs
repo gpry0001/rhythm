@@ -3,6 +3,8 @@ using System.IO;                  // 파일 입출력 (Path.Combine, File.Exists, Fil
 using System.Linq;                // LINQ (OrderBy) 사용
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 using static TreeEditor.TreeEditorHelper;
 
 public class SheetStorage : MonoBehaviour
@@ -12,7 +14,9 @@ public class SheetStorage : MonoBehaviour
 
     public int Linecnt;
     public float bpm;
-    public float lineYOffset = 0f;
+    //public float lineYOffset = 0f;
+
+    public InputField fileNameInput;
 
     private MapData mapData; // MapData 객체로 노트 데이터를 관리
     private Dictionary<Vector3, GameObject> activeNotes = new Dictionary<Vector3, GameObject>();
@@ -41,46 +45,98 @@ public class SheetStorage : MonoBehaviour
             if (hit.collider != null && hit.collider.CompareTag("Line"))
             {
                 Vector3 linePosition = hit.collider.transform.position;
-                if (activeNotes.ContainsKey(linePosition))
+                Vector3 keyPosition = new Vector3(Mathf.Round(linePosition.x * 10) / 10, Mathf.Round(linePosition.y * 10) / 10, 0);
+                if (activeNotes.ContainsKey(keyPosition))
                 {
-                    GameObject existingNote = activeNotes[linePosition];
+                    GameObject existingNote = activeNotes[keyPosition];
                     Destroy(existingNote);
-                    activeNotes.Remove(linePosition);
+                    activeNotes.Remove(keyPosition);
                     Debug.Log("노트 삭제");
                 }
                 else
                 {
-                    Vector3 spawnPosition = new Vector3(linePosition.x, linePosition.y + lineYOffset, 0);
+                    Vector3 spawnPosition = new Vector3(linePosition.x, linePosition.y, 0);
                     GameObject newNote = Instantiate(notePrefab, spawnPosition, Quaternion.identity);
-                    activeNotes.Add(linePosition, newNote);
+                    // 노트를 추가할 때도 반올림된 위치를 키로 사용합니다.
+                    activeNotes.Add(keyPosition, newNote);
                     Debug.Log("노트 생성");
                 }
             }
         }
     }
+    public void SaveFromInput()
+    {
+        SaveMapData(fileNameInput.text);
+    }
+
+    public void LoadFromInput()
+    {
+        LoadMapData(fileNameInput.text);
+    }
+
     public void SaveMapData(string fileName)
     {
         // 딕셔너리에 있는 노트를 MapData.notes 리스트에 추가
         mapData.notes.Clear(); // 기존 데이터 초기화
         foreach (var entry in activeNotes)
         {
-            // 실제 게임에 필요한 정보(시간, 레인 등)를 추출해서 NoteData 객체로 만듭니다.
-            // 아래는 예시이므로, 실제 게임의 타임라인 및 레인 규칙에 맞게 로직을 수정해야 합니다.
-            NoteData newNote = new NoteData(entry.Key.y, 0, "Up"); // Y축 위치를 시간으로, 레인을 0으로 가정
+            float notePositionX = entry.Key.x;
+            float notePositionY = entry.Key.y;
+            string direction = "";
+            int lane = 0;
+
+            // X 좌표가 0이 아니면 좌우 라인
+            if (Mathf.Abs(notePositionX) > 0.1f) // 0.1f는 오차 범위
+            {
+                if (notePositionX > 0)
+                {
+                    direction = "Right";
+                    lane = 1; // 오른쪽 레인
+                }
+                else
+                {
+                    direction = "Left";
+                    lane = 2; // 왼쪽 레인
+                }
+            }
+            // Y 좌표가 0이 아니면 위아래 라인
+            else if (Mathf.Abs(notePositionY) > 0.1f)
+            {
+                if (notePositionY > 0)
+                {
+                    direction = "Up";
+                    lane = 3; // 위쪽 레인
+                }
+                else
+                {
+                    direction = "Down";
+                    lane = 4; // 아래쪽 레인
+                }
+            }
+
+            NoteData newNote = new NoteData(notePositionY, lane, direction, entry.Key);
             mapData.notes.Add(newNote);
         }
 
-        string json = JsonUtility.ToJson(mapData, true); // ToJson(객체, 예쁘게 출력할지 여부)
-        string path = Application.persistentDataPath + "/" + fileName + ".json";
-        File.WriteAllText(path, json);
-        Debug.Log("맵 데이터 저장 완료: " + path);
+        string directoryPath = Path.Combine(Application.dataPath, "notejson");
+        // 파일명을 매개변수(fileName)로 받아옵니다.
+        string filePath = Path.Combine(directoryPath, fileName + ".json");
+
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
+
+        string json = JsonUtility.ToJson(mapData, true);
+        File.WriteAllText(filePath, json);
+        Debug.Log("맵 데이터 저장 완료: " + filePath);
     }
     public void LoadMapData(string fileName)
     {
-        string path = Application.persistentDataPath + "/" + fileName + ".json";
-        if (File.Exists(path))
+        string filePath = Path.Combine(Application.dataPath, "notejson", fileName + ".json");
+        if (File.Exists(filePath))
         {
-            string json = File.ReadAllText(path);
+            string json = File.ReadAllText(filePath);
             mapData = JsonUtility.FromJson<MapData>(json);
 
             // 기존 노트 오브젝트 모두 삭제 후, 로드된 데이터로 다시 생성
@@ -92,14 +148,16 @@ public class SheetStorage : MonoBehaviour
 
             foreach (NoteData note in mapData.notes)
             {
-
-                Debug.Log($"노트 로드: Time={note.time}, Lane={note.lane}");
+                Vector3 spawnPosition = new Vector3(note.position.x, note.position.y, 0);
+                // 노트를 생성하고 딕셔너리에 추가
+                GameObject newNote = Instantiate(notePrefab, spawnPosition, Quaternion.identity);
+                activeNotes.Add(note.position, newNote);
             }
             Debug.Log("맵 데이터 로드 완료");
         }
         else
         {
-            Debug.LogError("파일을 찾을 수 없습니다: " + path);
+            Debug.LogError("파일을 찾을 수 없습니다: " + filePath);
         }
     }
 

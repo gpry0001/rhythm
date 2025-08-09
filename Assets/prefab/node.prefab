@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 514312488, guid: 75237f16b53d9374c81dec388c0d09f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canBePressed: 0
+  keyToPress: 0
   eff: {fileID: 9206275298225004892, guid: 493c124e2c28ce842a42bc69a00c6c10, type: 3}
 --- !u!114 &521947356595802106
 MonoBehaviour:
@@ -108,7 +109,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887494748229943018}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c527de8dfc6c09340a573b7919df1fb4, type: 3}
   m_Name: 

@@ -1,0 +1,145 @@
+{
+    "bpm": 120.0,
+    "notes": [
+        {
+            "time": 0.0,
+            "lane": 2,
+            "direction": "Left",
+            "position": {
+                "x": -6.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 2,
+            "direction": "Left",
+            "position": {
+                "x": -16.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 1,
+            "direction": "Right",
+            "position": {
+                "x": 11.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 1,
+            "direction": "Right",
+            "position": {
+                "x": 21.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 1,
+            "direction": "Right",
+            "position": {
+                "x": 31.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 1,
+            "direction": "Right",
+            "position": {
+                "x": 41.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 1,
+            "direction": "Right",
+            "position": {
+                "x": 51.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 2,
+            "direction": "Left",
+            "position": {
+                "x": -26.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 2,
+            "direction": "Left",
+            "position": {
+                "x": -36.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 0.0,
+            "lane": 2,
+            "direction": "Left",
+            "position": {
+                "x": -46.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 11.0,
+            "lane": 3,
+            "direction": "Up",
+            "position": {
+                "x": 0.0,
+                "y": 11.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": -16.0,
+            "lane": 4,
+            "direction": "Down",
+            "position": {
+                "x": 0.0,
+                "y": -16.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": 51.0,
+            "lane": 3,
+            "direction": "Up",
+            "position": {
+                "x": 0.0,
+                "y": 51.0,
+                "z": 0.0
+            }
+        },
+        {
+            "time": -46.0,
+            "lane": 4,
+            "direction": "Down",
+            "position": {
+                "x": 0.0,
+                "y": -46.0,
+                "z": 0.0
+            }
+        }
+    ]
+}
